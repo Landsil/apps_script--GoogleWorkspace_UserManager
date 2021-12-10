@@ -2,7 +2,7 @@
 This code allows you to manage user data via google sheets and apps script.
 
 
-Currently it works with things I need (Title, Department, Manager, Genderpronoun)
+Currently it works with things I need (Title, Department, Manager, Gender pronoun)
 
 In the HR system we use (PeopleHR)
 
