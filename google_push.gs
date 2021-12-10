@@ -14,7 +14,7 @@ function loadUserData() {
   var column = Google_push.getRange('A1:A').getValues();
   var lastRow = column.filter(String).length;
   //Logger.log(lastRow);
-  //var lastRow = 39;           // This will push first 3 users only. Comment it out to push to everyone.
+  var lastRow = 3;           // This will push first 3 users only. Comment it out to push to everyone.
 
   var data = Google_push.getRange(2,1,lastRow,6).getValues(); //(2,1,lastRow,6) start row, start column, number of rows, number of columns
   //Logger.log(data);
