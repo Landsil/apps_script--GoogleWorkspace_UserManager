@@ -53,7 +53,7 @@ function main(){
   const data = loadUserData()
   for (const user of data){
     //Logger.log(user)
-    update_user(user[0],user[2],user[3],user[4],user[5],user[6])
+    update_user(user[0],user[2],user[3],user[4],user[5],user[6]) // This will match column from the sheet with input in "function update_user(...)"
 
   };
 };
