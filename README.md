@@ -11,4 +11,4 @@ This code allows you to manage user data via google sheets and apps script.
 ### How-To's
 1. You need to enable "Services", there in note on top of the code
 2. Templates will add most of fomulas that just copy data but not all, pick and chose as desired.
-3. TODO
+3. As provided code is not going to push anything, there is 1 line to un-comment and 1 to comment out.
