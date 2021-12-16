@@ -7,7 +7,7 @@ Live test can also run at: https://api.peoplehr.net/pages/functional
 You may wany to replace this code with any other HR system you have or jsut add those details manually, code will still work at long as it's in a correct column.
 
 */
-function PeopleHR() {
+function peopleHR_pull() {
   var URL = "https://api.peoplehr.net/Query"; // From their documentation.
   var payload = {
            "APIKey": peopleHR_key,                  // We are calling our project properties variable
