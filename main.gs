@@ -2,16 +2,16 @@
 function onOpen() {
   var sheet = SpreadsheetApp.getActiveSpreadsheet();
   var entries = [{
-    name : 'Google Pull',
-    functionName : 'downloadUsers'
+    name : 'Main Pull',
+    functionName : 'main_pull'
   },
-{
-    name : 'PeopleHR Pull',
-    functionName : 'PeopleHR'
+  {
+  name : 'Assemble data',
+  functionName : 'main_data'
   },
   {
     name : '! Push changes to Production !',
-    functionName : 'main'
+    functionName : 'main_push'
   },
   {
     name : 'Make Sheets',
@@ -25,3 +25,9 @@ function onOpen() {
 var scriptProperties = PropertiesService.getScriptProperties()
     peopleHR_key = scriptProperties.getProperty("hr_token")
     querry_name = scriptProperties.getProperty("querry_name");
+
+
+function main_pull(){
+  google_pull();
+  peopleHR_pull();
+};
