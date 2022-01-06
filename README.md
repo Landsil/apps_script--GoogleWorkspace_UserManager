@@ -3,9 +3,16 @@ This code allows you to manage user data via google sheets and apps script.
 
 
 ### Current state
-* Currently it works with things I need (Title, Department, Manager, Gender pronoun)
-* In the HR system we use (PeopleHR)
+* Currently it works with things I need.
+* From the HR system we use (PeopleHR)
 * Feature requests and contributions with diffrent HR systems are welcomed.
+* Thinkgs possible to udpate atm:
+1. Title
+2. Department
+3. Manager
+4. Description (Employee type)
+5. Gender Pronoun (custom field)
+6. Archived state (You need archived licences to use it)
 
 
 ### How-To's
