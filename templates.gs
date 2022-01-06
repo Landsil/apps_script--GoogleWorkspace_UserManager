@@ -1,5 +1,7 @@
 /****************
 This script is responsible for creating the empty pages for code to put data into.
+You will probably want to update PeopleHR_pull to fit your particular source of truth.
+Please make sure to keep content of the columns the same or you will have to re-do column calls in contentMover.gs 
 
 */
 
@@ -27,7 +29,8 @@ try{
   Google_pull.getRange("G1").setValue('Pronoun');
   Google_pull.getRange("H1").setValue('Building');
   Google_pull.getRange("I1").setValue('id');
-  Google_pull.getRange("J1").setValue('customType');
+  Google_pull.getRange("J1").setValue('description');
+  Google_pull.getRange("K1").setValue('Archived');
   
 try{
   var PeopleHR_pull = spreadsheet.getSheetByName("PeopleHR_pull");
@@ -55,9 +58,9 @@ try{
   PeopleHR_pull.getRange("M1").setValue('Fixed Term End Date');
   PeopleHR_pull.getRange("N1").setValue('Location');
 
-  PeopleHR_pull.getRange("P2").setValue('=ARRAYFORMULA(B2:B & " " & C2:C)');  // PeopleHR mess
-  PeopleHR_pull.getRange("Q2").setValue('=IFERROR(ARRAYFORMULA(VLOOKUP(G2:G,P:R,3,false)),)');  // PeopleHR mess
-  PeopleHR_pull.getRange("R2").setValue('=ARRAYFORMULA(A2:A)');  // PeopleHR mess
+  PeopleHR_pull.getRange("P1").setValue('=ARRAYFORMULA(B1:B & " " & C1:C)');  // PeopleHR mess
+  PeopleHR_pull.getRange("Q1").setValue('=IFERROR(ARRAYFORMULA(VLOOKUP(G1:G,P:R,3,false)),)');  // PeopleHR mess
+  PeopleHR_pull.getRange("R1").setValue('=ARRAYFORMULA(A1:A)');  // PeopleHR mess
 
 try{
   var Google_push = spreadsheet.getSheetByName("Google_push");
@@ -77,22 +80,8 @@ try{
   Google_push.getRange("E1").setValue('manager');
   Google_push.getRange("F1").setValue('Pronoun');
   Google_push.getRange("G1").setValue('Building');
-  Google_push.getRange("H1").setValue('customType');
-
-  Google_push.getRange("A2").setValue('=ARRAYFORMULA(Google_pull!I2:I)');  // Pull list of userID's
-  Google_push.getRange("B2").setValue('=ARRAYFORMULA(Google_pull!C2:C)');  // Pull list of email in google for matching and reference
-
-  // title from HR, or from google is person is missing from HR (service accounts and such)
-  Google_push.getRange("C2").setValue('=ARRAYFORMULA(   IFERROR(VLOOKUP(B2:B,PeopleHR_pull!A:D,4,False),VLOOKUP(B2:B,Google_pull!C:D,2,False))   )'); 
-
-  // // department from HR, or from google is person is missing from HR (service accounts and such)
-  Google_push.getRange("D2").setValue('=ARRAYFORMULA(   IFERROR(VLOOKUP(B2:B,PeopleHR_pull!A:E,5,False),VLOOKUP(B2:B,Google_pull!C:E,3,False))   )');
-
-  // // manager from HR, or from google is person is missing from HR (service accounts and such)
-  Google_push.getRange("E2").setValue('=ARRAYFORMULA(   IFERROR(VLOOKUP(B2:B,PeopleHR_pull!A:Q,17,False),VLOOKUP(B2:B,Google_pull!C:F,4,False))   )');
-
-  Google_push.getRange("F2").setValue('=ARRAYFORMULA(Google_pull!G2:G)');  // Pull list of Pronouncs in google (update that sheet to have them show before push)
-
+  Google_push.getRange("H1").setValue('description');
+  Google_push.getRange("I1").setValue('Archived');
 
   SpreadsheetApp.flush();
 }
