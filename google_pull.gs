@@ -1,12 +1,14 @@
 /*******************************************************************************************************************************************
-Lists users in a G Suite domain.
+Lists all non-suspended users in a G Suite domain.
 You will need to enable at least Direcory API and admin SDK
 https://developers.google.com/admin-sdk/directory/v1/reference/users/list
+
+You will need to run this as super admin otherwise it will fail to update other admins
 
 */
  
 // Pulls User data from G Suite
-function downloadUsers() {
+function google_pull() {
   var pageToken;
   var page;
   
@@ -33,7 +35,6 @@ function downloadUsers() {
     pageToken: pageToken
   });
 
-
 //************************
 // Assemble User's data
   var params = JSON.stringify(page.users);
@@ -54,8 +55,9 @@ function downloadUsers() {
         var manager = (data[i] && data[i].relations && data[i].relations[0] && data[i].relations[0].value)||""; Google_pull.getRange(index + lastRow + i, 6).setValue(manager);
         var Pronoun = (data[i] && data[i].customSchemas && data[i].customSchemas.Info && data[i].customSchemas.Info.Gender_pronoun)||""; Google_pull.getRange(index + lastRow + i, 7).setValue(Pronoun);
         var Building = (data[i] && data[i].locations && data[i].locations[0] && data[i].locations[0].buildingId)||""; Google_pull.getRange(index + lastRow + i, 8).setValue(Building);
-
         Google_pull.getRange(index + lastRow + i, 9).setValue(data[i].id);
+        var description = (data[i] && data[i].organizations && data[i].organizations[0] && data[i].organizations[0].description)||""; Google_pull.getRange(index + lastRow + i, 10).setValue(description);
+        Google_pull.getRange(index + lastRow + i,11).setValue(data[i].archived);
       }
       index += 50;
     } else {
