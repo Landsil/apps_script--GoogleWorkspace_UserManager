@@ -1,6 +1,5 @@
 /**************************************************************
 This code is used to move data around so that payload in google_push is only only users that actually have any changes, saves on processing time.
-
 */
 
 function load_googleSource(){
@@ -39,9 +38,9 @@ function load_googleSource(){
         for (const row of gArray){
           for (const hrRow of hrArray){
             if (row[2] === hrRow[0])
-            //Logger.log('check '+row[3]+' '+hrRow[3])
+            // Logger.log('check '+row[2]+' '+hrRow[0])
             {
-              if (row[3] != hrRow[3] && row[4] != hrRow[4] && row[5] != hrRow[16])
+              if (row[3] != hrRow[3] || row[4] != hrRow[4] || row[5] != hrRow[16])
               {
                 newArray.push(
                     {
@@ -50,16 +49,17 @@ function load_googleSource(){
                       "title": hrRow[3],
                       "department": hrRow[4],
                       "manager": hrRow[16],
-                      "customType": row[9],
-                      "Gender_pronoun": row[6]
+                      "description": row[9],
+                      "Gender_pronoun": row[6],
+                      "Archived": row[10],
                     }
-                  );
+                  )
                 };
             };
           };
         };
   
-    Logger.log(newArray)
+    // Logger.log(newArray)
     return newArray
   };
 
@@ -83,8 +83,10 @@ function load_googleSource(){
       Google_push.getRange(index + lastRow + i, 3).setValue(data[i]["title"]);
       Google_push.getRange(index + lastRow + i, 4).setValue(data[i]["department"]);
       Google_push.getRange(index + lastRow + i, 5).setValue(data[i]["manager"]);
-      Google_push.getRange(index + lastRow + i, 6).setValue(data[i]["customType"]);
-      Google_push.getRange(index + lastRow + i, 7).setValue(data[i]["Gender_pronoun"]);
+      Google_push.getRange(index + lastRow + i, 6).setValue(data[i]["Gender_pronoun"]);
+      // Building stuff here or remove all together 
+      Google_push.getRange(index + lastRow + i, 8).setValue(data[i]["description"]);
+      Google_push.getRange(index + lastRow + i, 9).setValue(data[i]["Archived"]);
     }
     
   // This actually posts data when it's ready instead of making many changes one at a time.
@@ -99,5 +101,4 @@ function load_googleSource(){
     var hrSource = load_hrSource();
     var newArray = make_newArray(sourceGoogle, hrSource);
     save_source(newArray);
-  
   };
