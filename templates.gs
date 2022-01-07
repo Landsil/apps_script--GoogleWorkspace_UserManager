@@ -31,6 +31,7 @@ try{
   Google_pull.getRange("I1").setValue('id');
   Google_pull.getRange("J1").setValue('description');
   Google_pull.getRange("K1").setValue('Archived');
+  Google_pull.getRange("O1").setValue('Force_Sync');
   
 try{
   var PeopleHR_pull = spreadsheet.getSheetByName("PeopleHR_pull");
