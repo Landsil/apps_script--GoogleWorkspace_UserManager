@@ -23,6 +23,6 @@ This code allows you to manage user data via google sheets and apps script.
 
 ### Using it without HR system
 1. Modify `main_pull()` in Main.gs to remove HR, run it to pull data from Google.
-2. You can manuall copy people you want to update to "Google_push" or put correct HR data in HR sheet manually.
+2. You can force rows move by updating "Force_Sync" column to "true" or put correct HR data in HR sheet manually.
 3. Assemble data = `main_data()` will compare HR and Google data and move diffrentces to "Google_push"
 4. Some data will be google only (eg. "Archived" status), you can update it in "Google_push" or in "Google_pull" if you are still using `main_data()`
