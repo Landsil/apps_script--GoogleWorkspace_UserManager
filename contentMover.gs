@@ -52,10 +52,10 @@ function make_newArray(sourceGoogle, hrSource) {
       )
     } else {
       for (const hrRow of hrArray) {
-        if (gRow[2] === hrRow[0])
+        if (gRow[2] === hrRow[0])     // If nothing isn't set to force this will check if that email is in HR sheet
         // Logger.log('check '+row[14])
         {
-          if (gRow[3] != hrRow[3] || gRow[4] != hrRow[4] || gRow[5] != hrRow[16]) {
+          if (gRow[3] != hrRow[3] || gRow[4] != hrRow[4] || gRow[5] != hrRow[16]) {      // And this will compare HR details changes
             newArray.push(
               {
                 "ID": gRow[8],
@@ -100,6 +100,7 @@ function save_source(newArray) {
     // Building stuff here or remove all together 
     Google_push.getRange(index + lastRow + i, 8).setValue(data[i]["description"]);
     Google_push.getRange(index + lastRow + i, 9).setValue(data[i]["Archived"]);
+
   }
 
   // This actually posts data when it's ready instead of making many changes one at a time.
