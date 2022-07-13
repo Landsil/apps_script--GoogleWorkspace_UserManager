@@ -51,7 +51,7 @@ This is an actuall call we are making to google.
 var "update" contains a replica of user JSON we pulled from google but contaning only data we care to update.
 */
 function update_user(dataArray) {
-  var dataArray = loadUserData(dataArray);   // You this only if you want to run this step manually.
+  var dataArray = loadUserData();   // You this only if you want to run this step manually.
   // Logger.log(dataArray)
 
   if (dataArray.length > 0) {
