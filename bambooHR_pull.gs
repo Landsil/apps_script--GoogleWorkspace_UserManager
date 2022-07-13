@@ -1,7 +1,5 @@
 /******************
-Generic data pool from BambooHR
 https://documentation.bamboohr.com/docs
-https://documentation.bamboohr.com/reference/get-employees-directory-1
 
 */
 
