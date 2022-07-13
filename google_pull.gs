@@ -50,24 +50,24 @@ function google_pull() {
         Google_pull.getRange(index + lastRow + i, 3).setValue(data[i].primaryEmail);
 
         // This data sit in an array in JSON, you have to specify all steps to get there. Put it in >> (things||"" << to post empty space if there is no data.
-        var title = (data[i] && data[i].organizations && data[i].organizations[0] && data[i].organizations[0].title) || " ";
+        var title = (data[i] && data[i].organizations && data[i].organizations[0] && data[i].organizations[0].title) || "";
         Google_pull.getRange(index + lastRow + i, 4).setValue(title);
 
-        var department = (data[i] && data[i].organizations && data[i].organizations[0] && data[i].organizations[0].department) || "";
+        var department = (data[i] && data[i].organizations && data[i].organizations[0] && data[i].organizations[0].department) || ""; 
         Google_pull.getRange(index + lastRow + i, 5).setValue(department);
 
-        var manager = (data[i] && data[i].relations && data[i].relations[0] && data[i].relations[0].value) || "";
+        var manager = (data[i] && data[i].relations && data[i].relations[0] && data[i].relations[0].value) || ""; 
         Google_pull.getRange(index + lastRow + i, 6).setValue(manager);
 
-        var Pronoun = (data[i] && data[i].customSchemas && data[i].customSchemas.Info && data[i].customSchemas.Info.Gender_pronoun) || "";
+        var Pronoun = (data[i] && data[i].customSchemas && data[i].customSchemas.Info && data[i].customSchemas.Info.Gender_pronoun) || ""; 
         Google_pull.getRange(index + lastRow + i, 7).setValue(Pronoun);
 
-        var Building = (data[i] && data[i].locations && data[i].locations[0] && data[i].locations[0].buildingId) || "";
+        var Building = (data[i] && data[i].locations && data[i].locations[0] && data[i].locations[0].buildingId) || ""; 
         Google_pull.getRange(index + lastRow + i, 8).setValue(Building);
 
         Google_pull.getRange(index + lastRow + i, 9).setValue(data[i].id);
 
-        var description = (data[i] && data[i].organizations && data[i].organizations[0] && data[i].organizations[0].description) || "";
+        var description = (data[i] && data[i].organizations && data[i].organizations[0] && data[i].organizations[0].description) || ""; 
         Google_pull.getRange(index + lastRow + i, 10).setValue(description);
 
         Google_pull.getRange(index + lastRow + i, 11).setValue(data[i].archived);
@@ -75,7 +75,7 @@ function google_pull() {
         // var aliases = (data[i].aliases || []).join(', '); 
         // Google_pull.getRange(index + lastRow + i, 12).setValue(aliases);
       }
-      index += 50;
+      index += data.length;
     } else {
       Logger.log('No users found.');
     }
