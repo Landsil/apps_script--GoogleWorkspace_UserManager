@@ -4,8 +4,7 @@ This code allows you to manage user data via google sheets and apps script.
 
 ### Current state
 * Currently it works with things I need.
-* From the HR system we use (PeopleHR)
-* Feature requests and contributions with diffrent HR systems are welcomed.
+* From the HR system we use (BambooHR)
 * Thinkgs possible to udpate atm:
 1. Title
 2. Department
