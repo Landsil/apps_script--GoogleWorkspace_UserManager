@@ -19,7 +19,7 @@ function onOpen() {
   },
   {
     name : '! Push changes to Production !',
-    functionName : 'update_user'
+    functionName : 'manual_push'
   },
   {
     name : 'Make Sheets',
@@ -32,12 +32,15 @@ function onOpen() {
 // Get all tokens and codes from project properties
 var scriptProperties = PropertiesService.getScriptProperties()
     peopleHR_key = scriptProperties.getProperty("hr_token")
-    querry_name = scriptProperties.getProperty("querry_name");
+    querry_name = scriptProperties.getProperty("querry_name")
+    bambooHR_key = scriptProperties.getProperty("bamboo_token")
+    domain = scriptProperties.getProperty("domain")
+                 ;
 
 
 function main_pull(){
   google_pull();
-  peopleHR_pull();
+  bambooHR_pull();
 };
 
 // This will run everything (for automation)
