@@ -1,40 +1,39 @@
 /**************************************************************
-This code is used to move data around so that payload in google_push is only only users that actually have any changes, saves on processing time.
+This code is used to move data around so that it doesn't have to by done by API functions.
+It "should" make it easier to find problems.
 */
 
+// Load all of Google data
 function load_googleSource() {
   var ss = SpreadsheetApp.getActiveSpreadsheet();
   var Google_pull = SpreadsheetApp.setActiveSheet(ss.getSheetByName("Google_pull"));
 
-  var column = Google_pull.getRange('A1:A').getValues();
-  var lastRow = column.filter(String).length;
+  var lastRowG = Google_pull.getRange('A1:A').getValues().filter(String).length + 1;
   var lastColumn = Google_pull.getLastColumn();
-  var sourceGoogle = Google_pull.getRange(2, 1, lastRow, lastColumn).getValues();  // start row, start column, number of rows, number of columns
-  //Logger.log(sourceGoogle)
+  var sourceGoogle = Google_pull.getRange(2, 1, lastRowG, lastColumn).getValues();  // start row, start column, number of rows, number of columns
   return sourceGoogle
 };
 
-function load_hrSource() {
+// Load all of BambooHR data
+function load_bambooHRSource() {
   var ss = SpreadsheetApp.getActiveSpreadsheet();
-  var PeopleHR_pull = SpreadsheetApp.setActiveSheet(ss.getSheetByName("PeopleHR_pull"));
+  var BambooHR_pull = SpreadsheetApp.setActiveSheet(ss.getSheetByName("BambooHR_pull"));
 
-  var column = PeopleHR_pull.getRange('A1:A').getValues();
-  var lastRow = column.filter(String).length;
-  var lastColumn = PeopleHR_pull.getLastColumn();
-  var hrSource = PeopleHR_pull.getRange(2, 1, lastRow, lastColumn).getValues();  // start row, start column, number of rows, number of columns
-  //Logger.log(hrSource)
-  return hrSource
+  var lastRowB = BambooHR_pull.getRange('A1:A').getValues().filter(String).length + 1;
+  var lastColumnB = BambooHR_pull.getLastColumn();
+  var bambooHRSource = BambooHR_pull.getRange(2, 1, lastRowB, lastColumnB).getValues();  // start row, start column, number of rows, number of columns
+  return bambooHRSource
 };
 
-function make_newArray(sourceGoogle, hrSource) {
-  const hrArray = load_hrSource()
-  const gArray = load_googleSource()
+/**************************************************************
+This array will be used to update current Google users with data from BambooHR
+*/
+function make_newArray(sourceGoogle, bambooHRSource) {
+  // const hrArray = hrSource
+  const gArray = sourceGoogle
+  const bArray = bambooHRSource
   var newArray = []
 
-  // Logger.log('HR')
-  // Logger.log(hrArray)
-  // Logger.log('Google')
-  // Logger.log(gArray)
   for (const gRow of gArray) {
     if (gRow[14] == true)   // This will forcefully copy marked rows from Google_pull into Google_push
     {
@@ -51,20 +50,21 @@ function make_newArray(sourceGoogle, hrSource) {
         }
       )
     } else {
-      for (const hrRow of hrArray) {
-        if (gRow[2] === hrRow[0])     // If nothing isn't set to force this will check if that email is in HR sheet
-        // Logger.log('check '+row[14])
+      for (const bRow of bArray) {
+        if (gRow[2] === bRow[0])     // If nothing isn't set to force this will check if that email is in HR sheet
         {
-          if (gRow[3] != hrRow[3] || gRow[4] != hrRow[4] || gRow[5] != hrRow[16]) {      // And this will compare HR details changes
+          if (gRow[3] !== bRow[2] || gRow[4] !== bRow[3] || gRow[5] !== bRow[5] || gRow[6] !== bRow[8])   // And this will compare HR details changes
+          // 
+          {
             newArray.push(
               {
                 "ID": gRow[8],
                 "primaryEmail": gRow[2],
-                "title": hrRow[3],
-                "department": hrRow[4],
-                "manager": hrRow[16],
+                "title": bRow[2],
+                "department": bRow[3],
+                "manager": bRow[5],
                 "description": gRow[9],
-                "Gender_pronoun": gRow[6],
+                "Gender_pronoun": bRow[8],
                 "Archived": gRow[10],
               }
             )
@@ -73,34 +73,29 @@ function make_newArray(sourceGoogle, hrSource) {
       }
     };
   };
-  // Logger.log(newArray)
   return newArray
 };
 
+// Save previous array to Google_push sheet
 function save_source(newArray) {
   var ss = SpreadsheetApp.getActiveSpreadsheet();
   var Google_push = SpreadsheetApp.setActiveSheet(ss.getSheetByName("Google_push"));
-
   Google_push.getRange("A2:I").clearContent();  // Clear the space
 
-  // This decided where to post. Starts after header.
-  var lastRow = Math.max(Google_push.getRange(2, 1).getLastRow(), 1);
-  var index = 0;
+  var lastRow = Google_push.getRange('A1:A').getValues().filter(String).length + 1;
   // var newArray = make_newArray(sourceGoogle, hrSource);   // You this only if you want to run this step manually.
   var data = newArray;
 
-  // Populate sheet by looping thru records in our list of dictonaries and pulling data we need into correct columns.
+  // Populate sheet by looping thru records in our list of dictionaries and pulling data we need into correct columns.
   for (var i = 0; i < data.length; i++) {
-    Google_push.getRange(index + lastRow + i, 1).setValue(data[i]['ID']);
-    Google_push.getRange(index + lastRow + i, 2).setValue(data[i]["primaryEmail"]);
-    Google_push.getRange(index + lastRow + i, 3).setValue(data[i]["title"]);
-    Google_push.getRange(index + lastRow + i, 4).setValue(data[i]["department"]);
-    Google_push.getRange(index + lastRow + i, 5).setValue(data[i]["manager"]);
-    Google_push.getRange(index + lastRow + i, 6).setValue(data[i]["Gender_pronoun"]);
-    // Building stuff here or remove all together 
-    Google_push.getRange(index + lastRow + i, 8).setValue(data[i]["description"]);
-    Google_push.getRange(index + lastRow + i, 9).setValue(data[i]["Archived"]);
-
+    Google_push.getRange(lastRow + i, 1).setValue(data[i]['ID']);
+    Google_push.getRange(lastRow + i, 2).setValue(data[i]["primaryEmail"]);
+    Google_push.getRange(lastRow + i, 3).setValue(data[i]["title"]);
+    Google_push.getRange(lastRow + i, 4).setValue(data[i]["department"]);
+    Google_push.getRange(lastRow + i, 5).setValue(data[i]["manager"]);
+    Google_push.getRange(lastRow + i, 6).setValue(data[i]["Gender_pronoun"]);
+    Google_push.getRange(lastRow + i, 8).setValue(data[i]["description"]);
+    Google_push.getRange(lastRow + i, 9).setValue(data[i]["Archived"]);
   }
 
   // This actually posts data when it's ready instead of making many changes one at a time.
@@ -109,10 +104,74 @@ function save_source(newArray) {
 }
 
 
-// This is what you use to run all the steps.
+/**************************************************************
+Compare bambooHR and Google and save users that need to be created.
+*/
+function make_newUserArray(bambooHRSource) {
+  var ss = SpreadsheetApp.getActiveSpreadsheet();
+  var Google_pull = SpreadsheetApp.setActiveSheet(ss.getSheetByName("Google_pull"));
+  var lastRowG = Google_pull.getRange('A1:A').getValues().filter(String).length + 1;
+
+  const bArray = bambooHRSource
+  var newUserArray = []
+  const gArray = []
+
+  var gData = Google_pull.getRange(2, 3, lastRowG, 1).getValues();  // Load 3rd column (one with user email)
+  for (const row of gData) {
+    gArray.push(row[0]);
+  };
+
+  // Check if people already left, ignore them if yes
+  for (const bRow of bArray) {
+    const newHire = Date.parse(bRow[9]) > Date.now()
+    const isUserMissing = !gArray.includes(bRow[0])
+    if (isUserMissing && newHire) {
+      newUserArray.push(
+        {
+          "primaryEmail": bRow[0],
+          "givenName": bRow[13],
+          "familyName": bRow[14],
+          "hireDate": bRow[9],
+          "homeEmail": bRow[15],
+        }
+      )
+    }
+
+  }
+  return newUserArray
+};
+
+// Save previous array to Google_create sheet
+function save_NewUserSource(newUserArray) {
+  var ss = SpreadsheetApp.getActiveSpreadsheet();
+  var Google_create = SpreadsheetApp.setActiveSheet(ss.getSheetByName("Google_create"));
+  Google_create.getRange("A2:G").clearContent();  // Clear the space
+
+  // This decided where to post. Starts after header.
+  var lastRow = Google_create.getRange('A1:A').getValues().filter(String).length + 1;
+  var data = newUserArray;
+
+  // Populate sheet by looping thru records in our list of dictionaries and pulling data we need into correct columns.
+  for (var i = 0; i < data.length; i++) {
+    Google_create.getRange(lastRow + i, 1).setValue(data[i]['primaryEmail']);
+    Google_create.getRange(lastRow + i, 2).setValue(data[i]["givenName"]);
+    Google_create.getRange(lastRow + i, 3).setValue(data[i]["familyName"]);
+    Google_create.getRange(lastRow + i, 4).setValue(data[i]["homeEmail"]);
+    Google_create.getRange(lastRow + i, 6).setValue(data[i]["hireDate"]);
+  }
+
+  // This actually posts data when it's ready instead of making many changes one at a time.
+  Google_create.sort(6);  // sort by column 1
+  SpreadsheetApp.flush();
+}
+
+
+// This is what you use to run all the steps as part of automation
 function main_data() {
   var sourceGoogle = load_googleSource();
-  var hrSource = load_hrSource();
-  var newArray = make_newArray(sourceGoogle, hrSource);
+  var bambooHRSource = load_bambooHRSource();
+  var newArray = make_newArray(sourceGoogle, bambooHRSource);
+  var newUserArray = make_newUserArray(bambooHRSource);
   save_source(newArray);
+  save_NewUserSource(newUserArray);
 };
