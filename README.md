@@ -9,9 +9,8 @@ This code allows you to manage user data via google sheets and apps script.
 1. Title
 2. Department
 3. Manager
-4. Description (Employee type)
-5. Gender Pronoun (custom field)
-6. Archived state (You need archived licences to use it)
+4. Gender Pronoun (custom field)
+5. Archived state (You need archived licences to use it)
 
 
 ### How-To's
@@ -25,3 +24,6 @@ This code allows you to manage user data via google sheets and apps script.
 2. You can force rows move by updating "Force_Sync" column to "true" or put correct HR data in HR sheet manually.
 3. Assemble data = `main_data()` will compare HR and Google data and move diffrentces to "Google_push"
 4. Some data will be google only (eg. "Archived" status), you can update it in "Google_push" or in "Google_pull" if you are still using `main_data()`
+
+### Proper Logs
+1. There is info in main.gs, I will refort it and put here later.
