@@ -1,5 +1,5 @@
 /*******************************************************************************************************************************************
-Update users in a G Suite domain.
+Update users in a Google Workspace.
 You will need to enable at least Directory API and admin SDK
 https://developers.google.com/admin-sdk/directory/reference/rest/v1/users/update
 
@@ -16,13 +16,14 @@ function loadUserData() {
   var ss = SpreadsheetApp.getActiveSpreadsheet();
   var Google_push = SpreadsheetApp.setActiveSheet(ss.getSheetByName("Google_push"));
 
-  var lastRow = Google_push.getRange('A1:A').getValues().filter(String).length + 1;
-  // var lastColumn = Google_push.getLastColumn();
-  var lastRow = 3;           // This will push first 3 users only. Comment it out to push to everyone.
+  var lastRow = Google_push.getRange('A1:A').getValues().filter(String).length;
+  console.log(lastRow)
+//   var lastColumn = Google_push.getLastColumn();
+  var lastRow = 4;           // This will push first 3 users only. Comment it out to push to everyone.
   var dataArray = []
 
   if (lastRow > 1) {
-    var data = Google_push.getRange(2, 1, lastRow - 1, lastColumn).getValues(); //(2,1,lastRow,6) start row, start column, number of rows, number of columns
+    var data = Google_push.getRange(2, 1, lastRow, lastColumn).getValues(); //(2,1,lastRow,6) start row, start column, number of rows, number of columns
     for (const row of data) {
       dataArray.push(
         {
@@ -76,7 +77,7 @@ function update_user(dataArray) {
         },
         // "archived": dataArray[i]['archived'],    // This is a sensitive change so I'm shipping it commented out.
       };
-      // var update = AdminDirectory.Users.update(update, dataArray[i]['ID']);  // This will update your org, you have to un-comment it to work.
+//       var update = AdminDirectory.Users.update(update, dataArray[i]['ID']);  // This will update your org, you have to un-comment it to work.
     };
   } else {
     console.log(`No changes`)
