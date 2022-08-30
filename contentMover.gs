@@ -88,14 +88,18 @@ function save_source(newArray) {
 
   // Populate sheet by looping thru records in our list of dictionaries and pulling data we need into correct columns.
   for (var i = 0; i < data.length; i++) {
-    Google_push.getRange(lastRow + i, 1).setValue(data[i]['ID']);
-    Google_push.getRange(lastRow + i, 2).setValue(data[i]["primaryEmail"]);
-    Google_push.getRange(lastRow + i, 3).setValue(data[i]["title"]);
-    Google_push.getRange(lastRow + i, 4).setValue(data[i]["department"]);
-    Google_push.getRange(lastRow + i, 5).setValue(data[i]["manager"]);
-    Google_push.getRange(lastRow + i, 6).setValue(data[i]["Gender_pronoun"]);
-    Google_push.getRange(lastRow + i, 8).setValue(data[i]["description"]);
-    Google_push.getRange(lastRow + i, 9).setValue(data[i]["Archived"]);
+    if (data[i]["primaryEmail"] != "") {
+
+      Google_push.getRange(lastRow + i, 1).setValue(data[i]['ID']);
+      Google_push.getRange(lastRow + i, 2).setValue(data[i]["primaryEmail"]);
+      Google_push.getRange(lastRow + i, 3).setValue(data[i]["title"]);
+      Google_push.getRange(lastRow + i, 4).setValue(data[i]["department"]);
+      Google_push.getRange(lastRow + i, 5).setValue(data[i]["manager"]);
+      Google_push.getRange(lastRow + i, 6).setValue(data[i]["Gender_pronoun"]);
+      Google_push.getRange(lastRow + i, 8).setValue(data[i]["description"]);
+      Google_push.getRange(lastRow + i, 9).setValue(data[i]["Archived"]);
+
+    }
   }
 
   // This actually posts data when it's ready instead of making many changes one at a time.
